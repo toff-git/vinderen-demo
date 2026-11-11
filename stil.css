@@ -1,0 +1,487 @@
+/* Vinderen Hudpleie, demo v2: felles stil for alle sidene. Farger og skrift i tokens.css. */
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--porselen);color:var(--kull);font:400 1rem/1.6 var(--sans);overflow-x:hidden}
+img{max-width:100%;height:auto;display:block}
+a{color:inherit}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--mork-gull);outline-offset:3px}
+.pa-mork :focus-visible,.topp:not(.fast) :focus-visible{outline-color:var(--gull)}
+.skjult{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.hopp{position:absolute;left:1rem;top:-4rem;z-index:var(--z-meny);background:var(--kull);color:var(--hvit);padding:.6rem 1rem}
+.hopp:focus{top:1rem}
+
+/* Logo: dagens fil brukt som maske, farget med currentColor */
+.logo{display:block;width:var(--logo-b,150px);aspect-ratio:500/151;background:currentColor;
+  -webkit-mask:url(bilder/logo-maske.png) center/contain no-repeat;mask:url(bilder/logo-maske.png) center/contain no-repeat}
+.monogram{display:block;width:var(--mono-b,64px);aspect-ratio:151/101;background:currentColor;
+  -webkit-mask:url(bilder/monogram-maske.png) center/contain no-repeat;mask:url(bilder/monogram-maske.png) center/contain no-repeat}
+
+/* Knapper: rette hjørner overalt (radius 0), kulltekst på gull, hvit tekst på kull */
+.knapp{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;min-height:48px;padding:0 1.6rem;
+  font:600 .8125rem/1 var(--sans);letter-spacing:.08em;text-transform:uppercase;text-decoration:none;white-space:nowrap;
+  border:1px solid transparent;border-radius:0;cursor:pointer;
+  transition:transform 120ms var(--ut),background-color 200ms var(--ut),color 200ms var(--ut),border-color 200ms var(--ut)}
+.knapp:active{transform:scale(.97);transition-duration:60ms}
+.knapp-gull{background:var(--gull);color:var(--kull)}
+.knapp-gull:hover{background:#C2B68C}
+.knapp-kull{background:var(--kull);color:var(--hvit)}
+.knapp-kull:hover{background:#3A3A39}
+.knapp-lys{background:transparent;color:var(--hvit);border-color:rgba(255,255,255,.7)}
+.knapp-lys:hover{background:var(--hvit);color:var(--kull)}
+.knapp-strek{background:transparent;color:var(--kull);border-color:var(--kull);width:100%}
+.knapp-strek:hover{background:var(--kull);color:var(--hvit)}
+.lenke{font:600 .8125rem/1.4 var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--mork-gull);text-decoration:none;
+  border-bottom:1px solid currentColor;padding-bottom:2px}
+.lenke:hover{color:var(--kull)}
+
+/* ---------- Toppen (Saman Amel: delt meny, logo i midten, timen som likeverdig punkt) ---------- */
+.topp{position:fixed;inset:0 0 auto 0;z-index:var(--z-topp);color:var(--hvit);
+  transition:background-color 300ms var(--ut),color 300ms var(--ut),box-shadow 300ms var(--ut)}
+.topp.fast{background:rgba(247,247,245,.86);color:var(--kull);-webkit-backdrop-filter:blur(18px) saturate(160%);backdrop-filter:blur(18px) saturate(160%);
+  box-shadow:0 1px 0 rgba(34,34,34,.08)}
+.topp-indre{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;height:76px;padding:0 clamp(16px,3vw,40px)}
+.topp nav ul{display:flex;gap:clamp(1rem,2.2vw,2.2rem);list-style:none;margin:0;padding:0}
+.topp nav a,.topp .verktoy a,.topp .verktoy button{font:500 .8125rem/1 var(--sans);letter-spacing:.06em;text-decoration:none;
+  background:none;border:0;padding:.6rem 0;cursor:pointer;position:relative}
+.topp nav a::after,.topp .verktoy a::after{content:"";position:absolute;left:0;right:0;bottom:.25rem;height:1px;background:currentColor;
+  transform:scaleX(0);transform-origin:left;transition:transform 260ms var(--ut)}
+.topp nav a:hover::after,.topp .verktoy a:hover::after{transform:scaleX(1)}
+.topp .logo-lenke{justify-self:center;color:inherit}
+.topp .logo{--logo-b:156px}
+.verktoy{display:flex;justify-content:flex-end;align-items:center;gap:clamp(1rem,2vw,2rem)}
+.verktoy .bestill{color:inherit;border-bottom:1px solid currentColor}
+.menyknapp{display:none}
+@media (max-width:900px){
+  .topp nav,.verktoy .bestill,.verktoy .kontakt{display:none}
+  .menyknapp{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;background:none;border:0;cursor:pointer;margin-left:-10px}
+  .menyknapp span{display:block;width:22px;height:1px;background:currentColor;position:relative}
+  .menyknapp span::before,.menyknapp span::after{content:"";position:absolute;left:0;width:22px;height:1px;background:currentColor}
+  .menyknapp span::before{top:-7px}.menyknapp span::after{top:7px}
+  .topp-indre{height:64px}
+  .topp .logo{--logo-b:132px}
+}
+
+/* Mobilmeny: glir inn fra venstre og ut samme vei */
+.meny{position:fixed;inset:0;z-index:var(--z-meny);visibility:hidden}
+.meny-slor{position:absolute;inset:0;background:rgba(34,34,34,.4);opacity:0;transition:opacity 280ms var(--ut)}
+.meny-flate{position:absolute;inset:0 auto 0 0;width:min(86vw,380px);background:var(--porselen);padding:1.25rem 1.5rem 2rem;
+  transform:translateX(-100%);transition:transform 380ms var(--fjaer);display:flex;flex-direction:column;gap:2rem;overflow:auto}
+.meny.apen{visibility:visible}
+.meny.apen .meny-slor{opacity:1}
+.meny.apen .meny-flate{transform:none}
+.meny ul{list-style:none;margin:0;padding:0}
+.meny li a{display:block;font:500 2rem/1.25 var(--serif);text-decoration:none;padding:.35rem 0}
+.meny-lukk{align-self:flex-start;background:none;border:0;font:500 .8125rem/1 var(--sans);letter-spacing:.08em;text-transform:uppercase;padding:.9rem 0;cursor:pointer}
+
+/* ---------- Første skjerm: diptyk (Saman Amel) + én setning (Lesse) ---------- */
+.forside{position:relative;min-height:100dvh;display:grid;grid-template-columns:1fr 1fr;color:var(--hvit);background:var(--kull)}
+.felt{margin:0;position:relative;overflow:hidden;min-height:100dvh;display:flex;align-items:flex-end;justify-content:center;padding:0 1rem 1.6rem}
+.felt-klinikk{background:radial-gradient(120% 90% at 35% 30%,#3a3a38 0%,#262625 60%,#1d1d1c 100%)}
+.felt-butikk{background:radial-gradient(110% 90% at 60% 40%,#55554f 0%,#474745 55%,#3b3b39 100%)}
+.plassholder-merke{position:absolute;top:96px;left:50%;transform:translateX(-50%);width:max-content;max-width:84%;text-align:center;
+  font:500 .6875rem/1.5 var(--sans);letter-spacing:.06em;color:rgba(255,255,255,.72);border:1px dashed rgba(255,255,255,.32);padding:.4rem .7rem}
+.felt figcaption{font:400 1rem/1.2 var(--serif);font-style:italic;letter-spacing:.01em;color:rgba(255,255,255,.88)}
+.felt figure{margin:0}
+.forside-tekst{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 16px;pointer-events:none}
+.forside h1{margin:0;font:400 clamp(2.1rem,4.4vw,4rem)/1.08 var(--serif);letter-spacing:-.015em;max-width:19ch;text-wrap:balance;padding-bottom:.1em}
+.forside h1 em{font-style:italic}
+.forside .valg{display:flex;gap:.75rem;margin-top:2.2rem;pointer-events:auto;flex-wrap:wrap;justify-content:center}
+.forside .valg .knapp{min-width:12.5rem}
+@media (max-width:640px){
+  .felt{min-height:88dvh;padding-bottom:5.6rem}
+  .forside{min-height:88dvh}
+  .plassholder-merke{top:76px;font-size:.625rem;max-width:90%;white-space:normal}
+  .forside h1{font-size:2.15rem;max-width:14ch}
+  .forside .valg{flex-direction:column;width:min(100%,300px)}
+  .forside .valg .knapp{width:100%}
+}
+
+/* ---------- Seksjoner ---------- */
+.seksjon{padding:clamp(5rem,10vw,9rem) clamp(16px,4vw,56px)}
+.bredde{max-width:1360px;margin:0 auto}
+h2{font:400 clamp(2rem,3.6vw,3.25rem)/1.08 var(--serif);letter-spacing:-.012em;margin:0;text-wrap:balance}
+h2 em{font-style:italic}
+.ingress{max-width:46ch;color:var(--logogra);margin:1rem 0 0}
+.etikett{font:600 .6875rem/1.3 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--logogra);margin:0 0 1.1rem}
+
+/* ---------- Kjøp igjen: raden man drar (Glossier) ---------- */
+.kjop-hode{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:1.5rem 3rem;margin-bottom:2.2rem}
+.kategorier{display:flex;flex-wrap:wrap;gap:.25rem 1.6rem;list-style:none;margin:0;padding:0}
+.kategorier a{font:500 .875rem/1 var(--sans);text-decoration:none;padding:.7rem 0;display:inline-block;border-bottom:1px solid transparent}
+.kategorier a:hover{border-color:currentColor}
+.kategorier sup{font-size:.6875rem;color:var(--logogra);margin-left:.15rem}
+.rad-ramme{position:relative;margin:0 calc(-1*clamp(16px,4vw,56px));padding:0 clamp(16px,4vw,56px);overflow:hidden;touch-action:pan-y;cursor:grab}
+.rad-ramme.drar{cursor:grabbing}
+.rad{display:flex;gap:clamp(12px,1.4vw,20px);list-style:none;margin:0;padding:0;will-change:transform}
+.kort{flex:0 0 clamp(250px,23vw,320px);display:flex;flex-direction:column;user-select:none;-webkit-user-select:none}
+.kort-bilde{position:relative;aspect-ratio:4/5;background:linear-gradient(180deg,#EFEFEC 0%,#E6E6E2 100%);display:flex;align-items:center;justify-content:center;margin-bottom:1rem}
+.kort-bilde .merkenavn{font:500 1.375rem/1.15 var(--serif);text-align:center;padding:0 1.5rem;color:#4b4b4a}
+.kort-bilde .pm{position:absolute;left:.75rem;bottom:.7rem;font:500 .6875rem/1 var(--sans);letter-spacing:.04em;color:var(--logogra)}
+.kort .merke{font:600 .6875rem/1.3 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--mork-gull);margin:0}
+.kort h3{font:500 1rem/1.35 var(--sans);margin:.35rem 0 .2rem}
+.kort .linje{font-size:.875rem;color:var(--logogra);margin:0}
+.kort .pris{display:flex;justify-content:space-between;align-items:baseline;margin:.7rem 0 .9rem;font-size:.9375rem}
+.kort .pris span:last-child{color:var(--logogra);font-size:.8125rem}
+.kort .reg{font-size:.75rem;line-height:1.45;color:var(--logogra);margin:-.3rem 0 .8rem;min-height:2.2em}
+.kort .knapp-strek{margin-top:auto}
+.rad-styring{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-top:2rem}
+.piler{display:flex;gap:.5rem}
+.pil{width:48px;height:48px;border:1px solid var(--kull);background:transparent;cursor:pointer;display:grid;place-items:center;font:400 1.25rem/1 var(--sans);
+  transition:background-color 200ms var(--ut),color 200ms var(--ut),transform 120ms var(--ut)}
+.pil:hover{background:var(--kull);color:var(--hvit)}
+.pil:active{transform:scale(.95)}
+.pil:disabled{opacity:.35;cursor:default;background:transparent;color:var(--kull)}
+
+/* ---------- Behandlingene som register (Lesse) ---------- */
+.register{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:clamp(2rem,6vw,6rem);align-items:start;margin-top:3rem}
+.register ol{list-style:none;margin:0;padding:0}
+.register li button{display:block;width:100%;text-align:left;background:none;border:0;cursor:pointer;padding:.12rem 0;
+  font:400 clamp(1.75rem,3.1vw,2.75rem)/1.12 var(--serif);color:#858582;transition:color 220ms var(--ut)}
+.register li button:hover{color:var(--logogra)}
+.register li button[aria-pressed="true"]{color:var(--kull)}
+.register li button[aria-pressed="true"] em{font-style:italic}
+.detalj{position:sticky;top:110px;background:var(--hvit);padding:clamp(1.5rem,3vw,2.5rem)}
+.detalj-bilde{aspect-ratio:16/10;background:radial-gradient(120% 100% at 30% 30%,#3a3a38,#232322);color:rgba(255,255,255,.75);
+  display:flex;align-items:flex-end;padding:.8rem;font:500 .6875rem/1.4 var(--sans);letter-spacing:.04em;margin-bottom:1.6rem}
+.detalj h3{font:500 1.875rem/1.15 var(--serif);margin:0}
+.detalj .fakta{display:flex;flex-wrap:wrap;gap:.3rem 1.5rem;margin:.8rem 0 1rem;font-size:.9375rem}
+.detalj .fakta b{font-weight:600}
+.detalj p{margin:0 0 1.5rem;color:var(--logogra);max-width:44ch}
+.detalj .innhold{transition:opacity 200ms var(--ut)}
+.detalj .innhold.bytter{opacity:0}
+
+/* ---------- Folkene (Lesse: liten tekst, stort bilde) ---------- */
+.folk{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:clamp(2rem,5vw,5rem);align-items:start}
+.folk-tekst p{margin:0 0 1.2rem;max-width:36ch}
+.folk-tekst blockquote{margin:0 0 2rem;font:400 1.5rem/1.3 var(--serif);font-style:italic;max-width:24ch}
+.folk-tekst blockquote footer{font:500 .8125rem/1.4 var(--sans);font-style:normal;color:var(--logogra);margin-top:.6rem}
+.folk-liste{list-style:none;margin:2rem 0 0;padding:0}
+.folk-liste li{padding:.9rem 0;border-top:1px solid rgba(34,34,34,.14)}
+.folk-liste li:last-child{border-bottom:1px solid rgba(34,34,34,.14)}
+.folk-liste b{display:block;font:500 1.25rem/1.2 var(--serif)}
+.folk-liste span{font-size:.875rem;color:var(--logogra)}
+.folk-bilde{aspect-ratio:4/3;background:radial-gradient(120% 100% at 60% 30%,#4a4a47,#2a2a29);position:relative}
+.folk-bilde span{position:absolute;left:1rem;bottom:1rem;font:500 .6875rem/1.4 var(--sans);letter-spacing:.04em;color:rgba(255,255,255,.75);max-width:80%}
+
+/* ---------- Din rutine (Lesse «The Ritual»: trinn i rekkefølge; Glossier: hele settet i én knapp) ---------- */
+.rutine{background:var(--kull);color:var(--hvit)}
+.rutine h2{color:var(--hvit)}
+.rutine .ingress{color:rgba(255,255,255,.78)}
+.eksempel-merke{display:inline-block;font:500 .75rem/1.3 var(--sans);color:var(--gull);border:1px dashed rgba(176,163,119,.6);padding:.35rem .6rem;margin:0 0 1.4rem}
+.rutine-hode{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:2rem}
+.faner{position:relative;display:flex;border-bottom:1px solid rgba(255,255,255,.25)}
+.faner button{background:none;border:0;cursor:pointer;color:rgba(255,255,255,.7);font:500 1.5rem/1 var(--serif);padding:.7rem 1.4rem .9rem;min-width:7.5rem;transition:color 220ms var(--ut)}
+.faner button[aria-selected="true"]{color:var(--hvit)}
+.faner button[aria-selected="true"]{font-style:italic}
+.fane-strek{position:absolute;left:0;bottom:-1px;height:2px;width:7.5rem;background:var(--gull);transition:transform 400ms var(--ut)}
+.trinn{list-style:none;margin:3.5rem 0 0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;border-top:1px solid rgba(255,255,255,.18);transition:opacity 220ms var(--ut)}
+.trinn.bytter{opacity:0}
+.trinn li{padding:2rem clamp(1rem,2.4vw,2.2rem) 2.2rem;border-right:1px solid rgba(255,255,255,.18);display:flex;flex-direction:column;gap:.35rem;min-height:15.5rem}
+.trinn li:first-child{padding-left:0}
+.trinn li:last-child{border-right:0}
+.trinn .nr{font:400 3.25rem/1 var(--serif);color:var(--gull)}
+.trinn .verb{font:600 .75rem/1.3 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.75);margin:.6rem 0 .2rem}
+.trinn h3{font:500 1.5rem/1.2 var(--serif);margin:0}
+.trinn .info{font-size:.875rem;color:rgba(255,255,255,.75);margin:0}
+.trinn .pris{font-size:.9375rem;margin:.4rem 0 1rem}
+.trinn .mini{margin-top:auto;align-self:flex-start;background:none;border:0;border-bottom:1px solid currentColor;color:var(--gull);cursor:pointer;
+  font:600 .75rem/1.4 var(--sans);letter-spacing:.08em;text-transform:uppercase;padding:.5rem 0 .15rem}
+.trinn .mini:hover{color:var(--hvit)}
+.trinn li.mangler{background:rgba(176,163,119,.1);padding-left:clamp(1rem,2.4vw,2.2rem);outline:1px dashed rgba(176,163,119,.55);outline-offset:-1px}
+.trinn .mangler-merke{font:600 .75rem/1.3 var(--sans);color:var(--gull);margin:0 0 .2rem}
+.rutine-fot{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:clamp(2rem,6vw,6rem);margin-top:3rem;padding-top:2.6rem;border-top:1px solid rgba(255,255,255,.18);align-items:start}
+.rutine-sum{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;margin:0;font-size:1rem}
+.rutine-sum b{font:500 1.75rem/1 var(--serif)}
+.rutine-sum-under{margin:.3rem 0 1.4rem;font-size:.8125rem;color:rgba(255,255,255,.7)}
+.rutine-kjop>.knapp{width:100%}
+.pafyll{margin-top:2rem}
+.pafyll label{display:block;font:500 .875rem/1.3 var(--sans);margin-bottom:.5rem}
+.pafyll-rad{display:flex;gap:.5rem}
+.pafyll select{flex:1;min-height:48px;background:transparent;color:var(--hvit);border:1px solid rgba(255,255,255,.6);border-radius:0;padding:0 .8rem;font:400 .9375rem var(--sans)}
+.pafyll select option{color:var(--kull)}
+.pafyll-svar{min-height:1.4em;margin:.5rem 0 0;font-size:.8125rem;color:rgba(255,255,255,.75)}
+.stempel-blokk p{color:rgba(255,255,255,.8);max-width:36ch;margin:1.2rem 0 0;font-size:.9375rem}
+.stempelkort{width:min(100%,380px);aspect-ratio:85/54;background:var(--porselen);color:var(--kull);padding:1.3rem 1.5rem;display:flex;flex-direction:column;justify-content:space-between;
+  box-shadow:0 30px 60px -30px rgba(0,0,0,.7)}
+.stempelkort .kort-topp{display:flex;justify-content:space-between;align-items:flex-start;font:600 .625rem/1.3 var(--sans);letter-spacing:.14em;text-transform:uppercase}
+.stempler{display:flex;gap:.8rem}
+.stempel{width:56px;height:56px;border:1px solid var(--kull);border-radius:50%;display:grid;place-items:center}
+.stempel.fylt{background:var(--gull);border-color:var(--gull);color:var(--kull)}
+.stempel .monogram{--mono-b:32px}
+.stempel.tomt{border-style:dashed}
+
+/* ---------- Hjemmeprogram i behandlingspanelet ---------- */
+.hjemme{margin-top:1.8rem;padding-top:1.4rem;border-top:1px solid rgba(34,34,34,.12)}
+.hjemme h4{font:600 .75rem/1.3 var(--sans);letter-spacing:.12em;text-transform:uppercase;margin:0 0 .2rem}
+.hjemme .eks{font-size:.75rem;color:var(--logogra);margin:0 0 .8rem}
+.hjemme ul{list-style:none;margin:0 0 1rem;padding:0}
+.hjemme li{display:flex;justify-content:space-between;gap:1rem;font-size:.875rem;padding:.35rem 0}
+.hjemme li span:last-child{white-space:nowrap}
+
+/* ---------- Merkene i løpende tekst ---------- */
+.merker p{font:400 clamp(1.5rem,2.6vw,2.25rem)/1.35 var(--serif);margin:0;max-width:52ch}
+.merker a{text-decoration:none;background-image:linear-gradient(currentColor,currentColor);background-size:0 1px;background-position:0 100%;background-repeat:no-repeat;transition:background-size 300ms var(--ut)}
+.merker a:hover{background-size:100% 1px}
+.merker .grå{color:var(--logogra)}
+
+/* ---------- Besøk oss ---------- */
+.besok{background:var(--hvit)}
+.besok-indre{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2.5rem}
+.besok h3{font:500 1.375rem/1.2 var(--serif);margin:0 0 .7rem}
+.besok p{margin:0 0 .4rem;font-size:.9375rem}
+.besok a{text-decoration-color:rgba(34,34,34,.35);text-underline-offset:3px}
+
+/* ---------- Bunn: monogrammet alene (Saman Amel) ---------- */
+.bunn{padding:4rem 16px 7rem;text-align:center;color:var(--kull)}
+.bunn .monogram{--mono-b:72px;margin:0 auto 1.6rem;color:var(--mork-gull)}
+.bunn ul{display:flex;flex-wrap:wrap;justify-content:center;gap:.4rem 1.6rem;list-style:none;margin:0 0 1.6rem;padding:0;font-size:.875rem}
+.bunn a{text-decoration:none}
+.bunn a:hover{text-decoration:underline}
+.bunn .demo{font-size:.8125rem;color:var(--logogra);margin:0}
+
+/* ---------- Kurven: panel fra høyre (Saman Amels bookingpanel) ---------- */
+.kurv{position:fixed;inset:0;z-index:var(--z-meny);visibility:hidden}
+.kurv .meny-slor{position:absolute;inset:0;background:rgba(34,34,34,.4);opacity:0;transition:opacity 280ms var(--ut)}
+.kurv-flate{position:absolute;inset:0 0 0 auto;width:min(92vw,420px);background:var(--porselen);padding:1.25rem 1.5rem 2rem;transform:translateX(100%);
+  transition:transform 380ms var(--fjaer);display:flex;flex-direction:column;gap:1.2rem}
+.kurv.apen{visibility:visible}.kurv.apen .meny-slor{opacity:1}.kurv.apen .kurv-flate{transform:none}
+.kurv-hode{display:flex;justify-content:space-between;align-items:center}
+.kurv-hode h2{font-size:1.75rem}
+.kurv ul{list-style:none;margin:0;padding:0;overflow:auto;flex:1}
+.kurv li{display:flex;justify-content:space-between;gap:1rem;padding:.8rem 0;border-bottom:1px solid rgba(34,34,34,.12);font-size:.9375rem}
+.kurv .sum{display:flex;justify-content:space-between;font-weight:600}
+.kurv .tom{color:var(--logogra)}
+.kurv .knapp:disabled{opacity:.55;cursor:not-allowed}
+
+/* ---------- Fast bunnlinje på mobil: begge veier alltid ---------- */
+.bunnlinje{display:none}
+@media (max-width:900px){
+  .bunnlinje{display:grid;grid-template-columns:1fr 1fr;position:fixed;inset:auto 0 0 0;z-index:var(--z-topp);background:var(--porselen);
+    box-shadow:0 -1px 0 rgba(34,34,34,.1);padding:.5rem .5rem calc(.5rem + env(safe-area-inset-bottom));gap:.5rem}
+  .bunnlinje .knapp{width:100%;padding:0 .5rem;gap:0}
+}
+
+/* ---------- Mobil ---------- */
+@media (max-width:900px){
+  .register{grid-template-columns:1fr}
+  .detalj{position:static}
+  .folk{grid-template-columns:1fr}
+  .folk-bilde{order:-1}
+  .trinn{grid-template-columns:1fr}
+  .trinn li,.trinn li:first-child{padding:1.6rem 0;border-right:0;border-bottom:1px solid rgba(255,255,255,.18);min-height:0}
+  .trinn li.mangler{padding:1.6rem 1rem}
+  .rutine-fot{grid-template-columns:1fr}
+  .faner button{min-width:6.5rem;padding:.6rem 1rem .8rem}
+  .fane-strek{width:6.5rem}
+  .besok-indre{grid-template-columns:1fr;gap:2rem}
+  .kort{flex-basis:72vw}
+}
+
+/* Inngang ved rulling: tung og rolig, bare opacity og transform */
+.inn{opacity:0;transform:translateY(24px);transition:opacity 900ms var(--ut),transform 900ms var(--ut)}
+.inn.synlig{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){
+  .inn{opacity:1;transform:none;transition:none}
+  .meny-flate,.kurv-flate{transition:opacity 200ms ease;transform:none}
+  .meny:not(.apen) .meny-flate,.kurv:not(.apen) .kurv-flate{opacity:0}
+  .topp nav a::after,.topp .verktoy a::after{transition:none}
+  .knapp:active,.pil:active{transform:none}
+}
+@media (prefers-reduced-transparency:reduce){.topp.fast{background:var(--porselen);backdrop-filter:none;-webkit-backdrop-filter:none}}
+
+/* =====================================================================
+   v2: bilder, undersider, kurv med mersalg
+   ===================================================================== */
+
+/* Første skjerm med stockbilder: mørkt slør nederst og midt for AA-kontrast på hvit tekst */
+.felt img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.felt::after{content:"";position:absolute;inset:0;background:
+  linear-gradient(180deg,rgba(20,20,19,.66) 0%,rgba(20,20,19,.52) 30%,rgba(20,20,19,.56) 62%,rgba(20,20,19,.72) 100%)}
+.felt-klinikk img{object-position:40% 60%}
+.felt-butikk img{object-position:55% 50%}
+.felt figcaption{position:relative;z-index:1}
+.felt figcaption a{text-decoration:none;border-bottom:1px solid rgba(255,255,255,.5);padding-bottom:2px}
+.forside-tekst{z-index:2}
+.forside h1{text-shadow:0 1px 24px rgba(0,0,0,.25)}
+
+/* Produktkort med ekte pakkebilder */
+.kort-bilde{background:var(--hvit);overflow:hidden}
+.kort-bilde img{width:100%;height:100%;object-fit:contain;padding:8%;transition:transform 600ms var(--ut)}
+.kort a.kort-lenke{text-decoration:none;display:flex;flex-direction:column}
+.kort a.kort-lenke:hover .kort-bilde img{transform:scale(1.03)}
+.kort a.kort-lenke:hover h3{text-decoration:underline;text-underline-offset:3px}
+.kort .lager-ut{font-size:.75rem;color:var(--logogra);margin:-.3rem 0 .8rem}
+.kort .knapp:disabled,.knapp:disabled{opacity:.5;cursor:not-allowed}
+.kort-bilde img,.kort-bilde{-webkit-user-drag:none}
+
+/* Behandlingspanelet med stemningsbilde */
+.detalj-bilde{position:relative;overflow:hidden;padding:0;background:#2a2a29}
+.detalj-bilde img{width:100%;height:100%;object-fit:cover}
+.hjemme li a{text-decoration:none}
+.hjemme li a:hover{text-decoration:underline}
+
+/* Folkene: plassholder for portrett + stemningsbilde ved siden av */
+.folk-bilder{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:clamp(12px,1.4vw,20px);align-items:end}
+.folk-bilder figure{margin:0}
+.folk-bilder .stemning img{width:100%;aspect-ratio:2/3;object-fit:cover}
+.folk-bilder figcaption{font-size:.75rem;color:var(--logogra);margin-top:.5rem}
+.folk-bilde{aspect-ratio:4/5}
+
+/* Demolinjen */
+.bunn .demo + .demo{margin-top:.3rem}
+
+/* ---------- Undersider: topp i lys versjon, overskrift ---------- */
+.underside .topp{background:rgba(247,247,245,.92);color:var(--kull);box-shadow:0 1px 0 rgba(34,34,34,.08);
+  -webkit-backdrop-filter:blur(18px) saturate(160%);backdrop-filter:blur(18px) saturate(160%)}
+.underside main{padding-top:76px}
+@media (max-width:900px){.underside main{padding-top:64px}}
+.side-hode{padding:clamp(3rem,7vw,6rem) clamp(16px,4vw,56px) clamp(2rem,4vw,3rem)}
+.side-hode h1{font:400 clamp(2.5rem,5vw,4.5rem)/1.04 var(--serif);letter-spacing:-.015em;margin:0;text-wrap:balance}
+.side-hode h1 em{font-style:italic}
+.side-hode .ingress{font-size:1.0625rem}
+.sti{font-size:.8125rem;color:var(--logogra);margin:0 0 1.4rem}
+.sti a{color:var(--mork-gull);text-decoration:none}
+.sti a:hover{text-decoration:underline}
+.bildeband{height:clamp(160px,22vw,300px);overflow:hidden;margin:0 clamp(16px,4vw,56px)}
+.bildeband img{width:100%;height:100%;object-fit:cover}
+.eks-merke{display:inline-block;font:500 .75rem/1.3 var(--sans);color:var(--mork-gull);border:1px dashed rgba(110,98,54,.55);padding:.35rem .6rem}
+
+/* ---------- Kolleksjonen ---------- */
+.filtre{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:1.2rem 2rem;padding:1.2rem 0;border-top:1px solid rgba(34,34,34,.14);border-bottom:1px solid rgba(34,34,34,.14);margin-bottom:2.4rem}
+.chips{display:flex;flex-wrap:wrap;gap:.25rem 1.4rem;list-style:none;margin:0;padding:0}
+.chips button{background:none;border:0;border-bottom:1px solid transparent;cursor:pointer;font:500 .9375rem/1 var(--sans);padding:.75rem 0;color:var(--logogra)}
+.chips button:hover{color:var(--kull)}
+.chips button[aria-pressed="true"]{color:var(--kull);border-color:var(--kull)}
+.chips sup{font-size:.6875rem;margin-left:.15rem}
+.velgere{display:flex;flex-wrap:wrap;gap:1rem}
+.velger label{display:block;font:600 .6875rem/1.3 var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--logogra);margin-bottom:.35rem}
+.velger select{min-height:44px;min-width:12rem;background:var(--hvit);border:1px solid rgba(34,34,34,.35);border-radius:0;padding:0 .8rem;font:400 .9375rem var(--sans);color:var(--kull)}
+.antall-linje{font-size:.875rem;color:var(--logogra);margin:0 0 1.4rem}
+.rutenett{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr));gap:2.6rem clamp(12px,1.6vw,24px)}
+.rutenett .kort{flex:none}
+.tomt-svar{padding:3rem 0;color:var(--logogra);max-width:46ch}
+@media (max-width:640px){.rutenett{grid-template-columns:1fr 1fr;gap:2rem 12px}.rutenett .kort h3{font-size:.9375rem}.velger select{min-width:0;width:100%}.velgere{width:100%;display:grid;grid-template-columns:1fr 1fr}}
+
+/* ---------- Produktsiden ---------- */
+.produkt{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(2rem,6vw,6rem);align-items:start}
+.produkt-bilde{background:var(--hvit);aspect-ratio:1/1;display:grid;place-items:center;position:sticky;top:100px}
+.produkt-bilde img{width:78%;height:78%;object-fit:contain}
+.produkt .merke{font:600 .75rem/1.3 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--mork-gull);margin:0 0 .8rem}
+.produkt .merke a{text-decoration:none}
+.produkt h1{font:400 clamp(2rem,3.6vw,3.25rem)/1.08 var(--serif);margin:0;letter-spacing:-.012em;text-wrap:balance}
+.produkt .linje{color:var(--logogra);margin:.8rem 0 0;font-size:1.0625rem}
+.prisrad{display:flex;align-items:baseline;gap:1.2rem;margin:1.6rem 0 .4rem}
+.prisrad b{font:500 1.75rem/1 var(--serif)}
+.prisrad span{color:var(--logogra);font-size:.9375rem}
+.lagerstatus{font-size:.875rem;margin:0 0 1.4rem}
+.lagerstatus::before{content:"";display:inline-block;width:.5rem;height:.5rem;border-radius:50%;background:var(--mork-gull);margin-right:.5rem;vertical-align:.08em}
+.lagerstatus.ut::before{background:transparent;border:1px solid var(--logogra)}
+.produkt .reg-merknad{font-size:.875rem;color:var(--logogra);background:var(--hvit);padding:.9rem 1rem;margin:0 0 1.4rem;border-left:2px solid var(--gull)}
+.produkt .kjop-knapp{width:100%}
+.pafyll-lys{margin-top:1.6rem;padding-top:1.4rem;border-top:1px solid rgba(34,34,34,.14)}
+.pafyll-lys label{display:block;font:500 .9375rem/1.3 var(--sans);margin-bottom:.25rem}
+.pafyll-lys .hjelp{font-size:.8125rem;color:var(--logogra);margin:0 0 .7rem}
+.pafyll-lys .rad{display:flex;gap:.5rem}
+.pafyll-lys select{flex:1;min-height:48px;background:var(--hvit);border:1px solid rgba(34,34,34,.35);border-radius:0;padding:0 .8rem;font:400 .9375rem var(--sans);color:var(--kull)}
+.pafyll-lys .knapp-strek{width:auto}
+.pafyll-lys .svar{min-height:1.4em;margin:.5rem 0 0;font-size:.8125rem;color:var(--logogra)}
+.blokk{margin-top:2.6rem;padding-top:1.8rem;border-top:1px solid rgba(34,34,34,.14)}
+.blokk h2{font:600 .75rem/1.3 var(--sans);letter-spacing:.14em;text-transform:uppercase;margin:0 0 1rem}
+.blokk p{margin:0 0 .9rem;max-width:60ch}
+.blokk ul.punkter{margin:0 0 .9rem;padding-left:1.1rem}
+.blokk ul.punkter li{margin:.2rem 0}
+.blokk .kilde{font-size:.75rem;color:var(--logogra)}
+.trinnstripe{list-style:none;margin:0 0 1rem;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid rgba(34,34,34,.14)}
+.trinnstripe li{padding:.9rem 1rem;border-right:1px solid rgba(34,34,34,.14);font-size:.875rem}
+.trinnstripe li:last-child{border-right:0}
+.trinnstripe li b{display:block;font:600 .6875rem/1.3 var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--logogra);margin-bottom:.3rem}
+.trinnstripe li.her{background:var(--kull);color:var(--hvit)}
+.trinnstripe li.her b{color:var(--gull)}
+.trinnstripe a{text-decoration:none}
+.trinnstripe a:hover{text-decoration:underline}
+.hjemme-blokk{display:grid;grid-template-columns:96px minmax(0,1fr);gap:1.2rem;align-items:start}
+.hjemme-blokk img{width:96px;aspect-ratio:2/3;object-fit:cover}
+.hjemme-blokk ul{list-style:none;margin:0 0 .6rem;padding:0}
+.hjemme-blokk li{padding:.3rem 0}
+.hjemme-blokk a{color:var(--kull)}
+.lenkeknapp{background:none;border:0;border-bottom:1px solid currentColor;cursor:pointer;padding:.5rem 0 .15rem;font:600 .8125rem/1.4 var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--mork-gull)}
+.lenkeknapp:hover{color:var(--kull)}
+.mer-fra{margin-top:clamp(4rem,8vw,7rem)}
+.mer-fra h2{margin-bottom:2rem}
+@media (max-width:900px){.produkt{grid-template-columns:1fr}.produkt-bilde{position:static}}
+@media (max-width:640px){.trinnstripe{grid-template-columns:1fr}.trinnstripe li{border-right:0;border-bottom:1px solid rgba(34,34,34,.14)}.trinnstripe li:last-child{border-bottom:0}}
+
+/* ---------- Merkene ---------- */
+.merkeliste{list-style:none;margin:0;padding:0;columns:2;column-gap:clamp(2rem,6vw,6rem)}
+.merkeliste li{break-inside:avoid;border-top:1px solid rgba(34,34,34,.14)}
+.merkeliste a{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;padding:.9rem 0;text-decoration:none}
+.merkeliste a .navn{font:400 clamp(1.375rem,2.2vw,1.875rem)/1.15 var(--serif)}
+.merkeliste a .tall{font-size:.8125rem;color:var(--logogra);white-space:nowrap}
+.merkeliste a:hover .navn{font-style:italic}
+.merkeliste li.med a .tall{color:var(--mork-gull)}
+@media (max-width:760px){.merkeliste{columns:1}}
+
+/* ---------- Behandlingssiden ---------- */
+.beh-liste{list-style:none;margin:0;padding:0}
+.beh{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(1.5rem,5vw,5rem);padding:clamp(2rem,4vw,3.2rem) 0;border-top:1px solid rgba(34,34,34,.14);scroll-margin-top:100px}
+.beh h2{font:400 clamp(1.875rem,3vw,2.75rem)/1.1 var(--serif);margin:0}
+.beh .fakta{display:flex;flex-wrap:wrap;gap:.3rem 1.6rem;margin:.9rem 0 1rem;font-size:.9375rem}
+.beh .fakta b{font-weight:600}
+.beh p{color:var(--logogra);max-width:48ch;margin:0 0 1.4rem}
+.beh .hjemme{margin-top:0;padding:1.4rem;border:0;background:var(--hvit)}
+.beh .hjemme li{align-items:center}
+.beh .hjemme img{width:44px;height:44px;object-fit:contain;flex:none;background:var(--hvit)}
+.beh .hjemme li span:first-of-type{flex:1}
+.beh .ingen{font-size:.875rem;color:var(--logogra);align-self:center}
+.beh-bilde img{width:100%;aspect-ratio:16/10;object-fit:cover;margin-bottom:1rem}
+@media (max-width:900px){.beh{grid-template-columns:1fr}}
+
+/* ---------- Rutinesiden ---------- */
+.rutine-to{display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,5vw,5rem);margin-top:3rem}
+.rutine-to h2{font:400 2rem/1.1 var(--serif);color:var(--hvit);margin:0 0 1.2rem;padding-bottom:.8rem;border-bottom:1px solid rgba(255,255,255,.25)}
+.rutine-to h2 em{font-style:italic}
+.rliste{list-style:none;margin:0;padding:0}
+.rliste li{display:grid;grid-template-columns:72px minmax(0,1fr) auto;gap:1rem;align-items:center;padding:1rem 0;border-bottom:1px solid rgba(255,255,255,.15)}
+.rliste li.mangler{background:rgba(176,163,119,.1);outline:1px dashed rgba(176,163,119,.55);outline-offset:-1px;padding:1rem}
+.rliste img{width:72px;height:72px;object-fit:contain;background:var(--hvit);padding:6px}
+.rliste .verb{font:600 .6875rem/1.3 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--gull);margin:0}
+.rliste h3{font:500 1.25rem/1.2 var(--serif);margin:.15rem 0}
+.rliste h3 a{text-decoration:none}
+.rliste h3 a:hover{text-decoration:underline}
+.rliste .info{font-size:.8125rem;color:rgba(255,255,255,.75);margin:0}
+.rliste .hoyre{text-align:right;font-size:.9375rem}
+.rliste .mini{background:none;border:0;border-bottom:1px solid currentColor;color:var(--gull);cursor:pointer;font:600 .6875rem/1.4 var(--sans);letter-spacing:.08em;text-transform:uppercase;padding:.5rem 0 .1rem;margin-top:.3rem}
+.rliste .mini:hover{color:var(--hvit)}
+.slik{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:clamp(2rem,6vw,6rem);align-items:center}
+.slik img{width:100%;aspect-ratio:3/2;object-fit:cover}
+.slik ol{margin:1.6rem 0 0;padding:0;list-style:none;counter-reset:s}
+.slik li{counter-increment:s;padding:1rem 0 1rem 3rem;border-top:1px solid rgba(34,34,34,.14);position:relative}
+.slik li::before{content:counter(s);position:absolute;left:0;top:.7rem;font:400 2rem/1 var(--serif);color:var(--mork-gull)}
+.slik li b{display:block;font:500 1.25rem/1.25 var(--serif);font-weight:500}
+.slik li span{font-size:.9375rem;color:var(--logogra)}
+@media (max-width:900px){.rutine-to,.slik{grid-template-columns:1fr}.rliste li{grid-template-columns:56px minmax(0,1fr)}.rliste img{width:56px;height:56px}.rliste .hoyre{grid-column:2;text-align:left}}
+
+/* ---------- Kurven med bilder, antall og «Fullfør rutinen» ---------- */
+.kurv-flate{overflow:auto}
+.kurv ul#kurvliste{flex:none;overflow:visible}
+.kurv li.vare{display:grid;grid-template-columns:56px minmax(0,1fr) auto;gap:.8rem;align-items:start}
+.kurv li.vare img{width:56px;height:56px;object-fit:contain;background:var(--hvit);padding:4px}
+.kurv li.vare .vnavn{font-size:.875rem;line-height:1.35}
+.kurv li.vare .vnavn small{display:block;color:var(--logogra);font-size:.75rem;letter-spacing:.06em;text-transform:uppercase}
+.kurv li.vare .vnavn a{text-decoration:none}
+.kurv .mengde{display:flex;align-items:center;gap:.2rem;margin-top:.4rem}
+.kurv .mengde button{width:32px;height:32px;border:1px solid rgba(34,34,34,.3);background:transparent;cursor:pointer;font:500 1rem/1 var(--sans)}
+.kurv .mengde button:hover{background:var(--kull);color:var(--hvit)}
+.kurv .mengde span{min-width:1.6rem;text-align:center;font-size:.875rem}
+.kurv .fjern{background:none;border:0;cursor:pointer;font-size:.75rem;color:var(--logogra);text-decoration:underline;margin-left:.6rem;padding:.4rem 0}
+.fullfor{background:var(--kull);color:var(--hvit);padding:1.1rem 1.2rem}
+.fullfor h3{font:500 1.25rem/1.2 var(--serif);margin:0 0 .3rem}
+.fullfor p{font-size:.8125rem;color:rgba(255,255,255,.8);margin:0 0 .8rem}
+.fullfor .forslag{display:grid;grid-template-columns:48px minmax(0,1fr);gap:.8rem;align-items:center}
+.fullfor img{width:48px;height:48px;object-fit:contain;background:var(--hvit);padding:4px}
+.fullfor .forslag span{font-size:.875rem}
+.fullfor button{margin-top:.8rem;width:100%}
+.kurv .bonus{font-size:.8125rem;color:var(--logogra);margin:0}
+.forside .knapp-lys{background:rgba(20,20,19,.32)}
+.forside .knapp-lys:hover{background:var(--hvit);color:var(--kull)}

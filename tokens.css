@@ -1,0 +1,19 @@
+/* Vinderen Hudpleie, retning A Hudjournalen: farger og skrift (fra docs/vinderen/merkevare/forslag.md, seksjon A).
+   Kontrast (WCAG): kull på gull 6,33; mørkt gull på porselen 5,65; logogrå på porselen 5,85; hvit på kull 15,9; gull på kull 6,33. */
+:root{
+  --kull:#222222;        /* tekst, mørke flater (dagens) */
+  --gull:#B0A377;        /* hovedknapp med kulltekst, gull på mørk bunn (dagens) */
+  --mork-gull:#6E6236;   /* lenker og små gullord på lys bunn */
+  --porselen:#F7F7F5;    /* bakgrunn, kald */
+  --hvit:#FFFFFF;        /* kort og paneler */
+  --logogra:#606062;     /* hjelpetekst (fra logoen på bookingsiden) */
+
+  --serif:"Cormorant Garamond", "Cormorant", Garamond, serif;
+  --sans:"Plus Jakarta Sans", system-ui, sans-serif;
+
+  --ut:cubic-bezier(.22,1,.36,1);       /* rolig ut-kurve for overganger uten gest */
+  --fjaer:cubic-bezier(.32,.72,0,1);    /* panel inn/ut, samme kurve begge veier */
+
+  --z-topp:20;
+  --z-meny:40;
+}
